@@ -1,0 +1,14 @@
+name: genome
+
+dependencies:
+  - conda-forge::python=3.9
+  - conda-forge::requests
+  - conda-forge::requests_cache
+  - conda-forge::html2text
+  - conda-forge::beautifulsoup4
+  - conda-forge::tqdm
+
+  - conda-forge::pip
+  - pip:
+      - datapane
+
