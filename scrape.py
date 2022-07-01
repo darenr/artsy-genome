@@ -21,20 +21,21 @@ session = requests_cache.CachedSession(
 
 def scrape_gene(gene, url):
 
-    print(" *", f"scrape_gene: {gene}")
 
     r = session.get(url)
-
-    print()
+    
+    print(" *", f"scrape_gene: {gene}", r.status_code)
 
     if r.status_code == requests.codes.ok:
 
         html = r.content
         soup = BeautifulSoup(html, "lxml")
+        
+        for div in soup.findAll("div", attrs={
+                "font-family": "sans"
+            }):
+            print(div)
 
-        for div in soup.findAll("div", attrs={"class": "jkcvUH"}):
-            for artist in div.findAll("div", attrs={"class": "Text-sc-18gcpao-0"}):
-                print(artist)
 
     return {}
 
@@ -54,7 +55,7 @@ def scrape_genomes(url):
 
         for div in soup.findAll("div", attrs={"id": re.compile(".*subject-matter.*")}):
             for a in div.findAll("a"):
-                link = f"https://www.artsy.net/{a['href']}"
+                link = f"https://www.artsy.net{a['href']}"
                 gene = a.text.strip()
                 db[gene] = scrape_gene(gene, link)
                 print(db)
